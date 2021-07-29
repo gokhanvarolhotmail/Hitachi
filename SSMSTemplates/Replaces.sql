@@ -1,3 +1,5 @@
+USE [Temporary] ;
+GO
 CREATE OR ALTER FUNCTION [dbo].[ReplaceValues]( @Type VARCHAR(128), @Input NVARCHAR(MAX))
 RETURNS NVARCHAR(MAX)
 AS
@@ -30,4 +32,16 @@ AS
 
         RETURN @Input ;
     END ;
+GO
+DECLARE @Input NVARCHAR(MAX) = [Util].[FS].[ReadAllTextFromFile]('c:\temp\blah.txt') ;
+DECLARE @Replaced NVARCHAR(MAX) ;
+
+SELECT @Replaced = [dbo].[ReplaceValues]('Template', @Input) ;
+
+SELECT
+    *
+  , CASE WHEN @Input <> @Replaced THEN 'Different' WHEN @Input = @Replaced THEN 'Same' END AS [IsDiff]
+  , @Input AS [Input]
+  , @Replaced AS [Replaced]
+FROM [Util].[FS].AppendAllTextToFile('c:\temp\blahReplaced.txt', @Replaced, 1) ;
 GO

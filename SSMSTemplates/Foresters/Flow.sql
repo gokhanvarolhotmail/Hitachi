@@ -1,7 +1,7 @@
 RETURN
 -- PL_SQL_ASQL_DacadooID
 TRUNCATE TABLE [dbo].[STG_For_memberprofileExtensionBase_LOAD]
-EXEC [dbo].[spOverwriteDacadooID] /* Not Needed */
+EXEC [dbo].[spOverwriteDacadooID] /* Not Needed Anymore */
 
 -- PL_SFTP_ADLG2_ACTIVITYCHALLENGE
 	-- PL_ADLG2_ASQLDB_ACTIVITYCHALLENGE_REWARDS

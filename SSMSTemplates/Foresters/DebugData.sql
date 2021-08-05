@@ -1,21 +1,57 @@
-/****** Script for SelectTopNRows command from SSMS  ******/
-SELECT TOP (1000) [FactHYBSCD_1]
-      ,[EventID]
-      ,[GUID]
-      ,[dacadoo_ID]
-      ,[RewardDateTime]
-      ,[RewardDateID]
-      ,[RewardYear]
-      ,[DescriptionText]
-      ,[Points]
-      ,[Source]
-      ,[InsertedDateTime]
-      ,[InsertedDateID]
-      ,[EventRewardSequence]
-      ,[FLAG_Exported]
-  FROM [dbo].[Fact_RewardPoints]
-  WHERE dacadoo_id = '6052f80e4cab0612e60442fa'
-
+SELECT
+'type',
+    [k].[FactHYBSCD_1]
+  , [k].[EventID]
+  , [k].[GUID]
+  , [k].[dacadoo_ID]
+  , [k].[RewardDateTime]
+  , [k].[RewardDateID]
+  , [k].[RewardYear]
+  , [k].[DescriptionText]
+  , [k].[Points]
+  , [k].[Source]
+  , [k].[InsertedDateTime]
+  , [k].[InsertedDateID]
+  , [k].[EventRewardSequence]
+  , [k].[FLAG_Exported]
+  FROM [dbo].[Fact_RewardPoints] k
+      WHERE [dacadoo_ID] = '6052f80e4cab0612e60442fa' 
+	  UNION all
+  SELECT
+  'xxx',
+    [k].[FactHYBSCD_1]
+  , [k].[EventID]
+  , [k].[GUID]
+  , [k].[dacadoo_ID]
+  , [k].[RewardDateTime]
+  , [k].[RewardDateID]
+  , [k].[RewardYear]
+  , [k].[DescriptionText]
+  , [k].[Points]
+  , [k].[Source]
+  , [k].[InsertedDateTime]
+  , [k].[InsertedDateID]
+  , [k].[EventRewardSequence]
+  , [k].[FLAG_Exported]
+FROM( SELECT
+          [FactHYBSCD_1]
+        , [EventID]
+        , [GUID]
+        , [dacadoo_ID]
+        , [RewardDateTime]
+        , [RewardDateID]
+        , [RewardYear]
+        , [DescriptionText]
+        , SUM([Points]) OVER ( PARTITION BY [GUID] ) AS [Points]
+        , [Source]
+        , [InsertedDateTime]
+        , [InsertedDateID]
+        , [EventRewardSequence]
+        , [FLAG_Exported]
+        , ROW_NUMBER() OVER ( PARTITION BY [GUID] ORDER BY [EventRewardSequence] DESC ) AS [Row]
+      FROM [dbo].[Fact_RewardPoints]
+      WHERE [dacadoo_ID] = '6052f80e4cab0612e60442fa' ) AS [k]
+WHERE [k].[Row] = 1 ;
 
   SELECT * FROM STG_DacadooID
   WHERE dacadoo_id = '6052f80e4cab0612e60442fa'

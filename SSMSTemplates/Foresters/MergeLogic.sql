@@ -19,7 +19,7 @@ AS
                  , [Dollar Value (USD)]
                  , [RewardDate]
                  , [PointsAwarded]
-                 , REPLACE(REPLACE([DescriptionText], CHAR(10), CHAR(32)), CHAR(13), CHAR(32)) AS [DescriptionText]
+                 , REPLACE(REPLACE(REPLACE([DescriptionText], CHAR(13) + CHAR(10), CHAR(32)), CHAR(10), CHAR(32)), CHAR(13), CHAR(32)) AS [DescriptionText]
                FROM [dbo].[STG_ActivityChallenge_LOAD] ) AS [s]
         ON [t].[dacadoo_ID] = [s].[dacadoo_ID]
        AND [t].[EventID] = [s].[EventID]

@@ -26,7 +26,6 @@ AS
        AND [t].[ContactID] = [s].[ContactID]
        AND [t].[DescriptionText] = [s].[DescriptionText]
        AND [t].[RewardDate] = [s].[RewardDate]
-       AND [t].[PointsAwarded] <> [s].[PointsAwarded]
         WHEN MATCHED THEN UPDATE SET
                               [t].[PointsAwarded] = [t].[PointsAwarded] + [s].[PointsAwarded]
                             , [t].[Dollar Value (USD)] = [t].[Dollar Value (USD)] + [s].[Dollar Value (USD)]

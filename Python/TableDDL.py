@@ -1,3 +1,7 @@
+import os
+FilePath = "/FileStore/gvarol/ALL_DDL.txt"
+if os.path.exists(FilePath):
+    os.remove(FilePath)
 dbs = spark.catalog.listDatabases()
 CombinedDDL = ""
 for db in dbs:
@@ -5,7 +9,7 @@ for db in dbs:
     for t in tables:
         DDL = spark.sql("SHOW CREATE TABLE {}.{}".format(db.name, t.name))
         CombinedDDL = CombinedDDL + "\n\n--------------------------\n\n" + DDL.first()[0]
-dbutils.fs.put("/FileStore/gvarol/ALL_DDL.txt", CombinedDDL)
+dbutils.fs.put(FilePath, CombinedDDL)
 
 
 https://adb-6202383808415066.6.azuredatabricks.net/files/gvarol/ALL_DDL.txt

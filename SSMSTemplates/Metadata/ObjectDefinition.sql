@@ -25,3 +25,23 @@ INNER JOIN [sys].[schemas] AS [s] ON [o].[schema_id] = [s].[schema_id]
 INNER JOIN [sys].[all_sql_modules] AS [m] ON [m].[object_id] = [o].[object_id]
 WHERE 1 = 1 ;
 GO
+-- Definition Scripts
+
+DECLARE @Val NVARCHAR(MAX) = N'[SchemaName], [ObjectName], [FQN], [type], [type_desc], [create_date], [modify_date], [definition]' ;
+
+SELECT CONCAT('SELECT
+', @Val, '
+FROM(VALUES') AS [SQL]
+UNION ALL
+SELECT
+    CONCAT(
+        CAST('(' AS NVARCHAR(MAX)), '''', REPLACE([s].[name], '''', ''''''), ''', ''', REPLACE([o].[name], '''', ''''''), ''', '''
+      , REPLACE(QUOTENAME([s].[name]) + '.' + QUOTENAME([o].[name]), '''', ''''''), ''', ''', TRIM([o].[type])COLLATE SQL_Latin1_General_CP1_CI_AS, ''', '''
+      , [o].[type_desc] COLLATE SQL_Latin1_General_CP1_CI_AS, ''', ''', CONVERT(VARCHAR(30), [o].[create_date], 121), ''', '''
+      , CONVERT(VARCHAR(30), [o].[modify_date], 121), ''', ''', REPLACE([m].[definition], '''', ''''''), '''),') AS [SQL]
+FROM [sys].[objects] AS [o]
+INNER JOIN [sys].[schemas] AS [s] ON [o].[schema_id] = [s].[schema_id]
+INNER JOIN [sys].[all_sql_modules] AS [m] ON [m].[object_id] = [o].[object_id]
+UNION ALL
+SELECT CONCAT(')[d] (', @Val, ')') AS [SQL] ;
+GO

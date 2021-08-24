@@ -5,6 +5,9 @@ SELECT
   , [o].[type_desc]
   , LEN([m].[definition]) AS [DefLen]
   , [m].[definition]
+  , [m].[definition] + '
+GO
+' AS [SQL]
 FROM [sys].[objects] AS [o]
 INNER JOIN [sys].[schemas] AS [s] ON [o].[schema_id] = [s].[schema_id]
 INNER JOIN [sys].[all_sql_modules] AS [m] ON [m].[object_id] = [o].[object_id]

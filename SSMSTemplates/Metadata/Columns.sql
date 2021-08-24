@@ -2,7 +2,7 @@
 
 IF OBJECT_ID('tempdb..[#Columns]') IS NULL
 SELECT
-    QUOTENAME([s].[name]) + '.' + QUOTENAME([t].[name]) AS [FQL]
+    QUOTENAME([s].[name]) + '.' + QUOTENAME([t].[name]) AS [FQN]
   , [s].[name] AS [SchemaName]
   , [t].[name] AS [TableName]
   , [c].[name] AS [ColumnName]

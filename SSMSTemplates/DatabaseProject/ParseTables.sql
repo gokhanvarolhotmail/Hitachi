@@ -51,3 +51,29 @@ FROM( SELECT
 CROSS APPLY [Util].[dbo].[ParseDelimitedColumns32]([k].[TableName], '.') AS [b] ;
 GO
 
+SELECT [p].[Field]
+FROM [Util].[dbo].ParseDelimited(
+         '[dbo].[PROPERTY_DIM]
+[detailedpl].[PROPERTY_DIM]
+[hospitality_DW].[PROPERTY_DIM]
+[industrial_3nf_stage].[PROPERTY_DIM]
+[industrial_DW2].[PROPERTY_DIM]
+[industrial_DW].[PROPERTY_DIM]
+[INFORMATION_SCHEMA].[PROPERTY_DIM]
+[RCS_DW].[PROPERTY_DIM]
+[Recon].[PROPERTY_DIM]
+[stage].[PROPERTY_DIM]
+[stage_hospitality_3nf].[PROPERTY_DIM]
+[stage_industrial_3nf].[PROPERTY_DIM]
+[stage_linkbatch_3nf].[PROPERTY_DIM]
+[stage_rcs_3nf].[PROPERTY_DIM]
+[stage_test_le].[PROPERTY_DIM]
+[stage_workday_3nf].[PROPERTY_DIM]
+[stg].[PROPERTY_DIM]
+[sysdiag].[PROPERTY_DIM]
+[sys].[PROPERTY_DIM]
+[workday_DW].[PROPERTY_DIM]
+[xSM].[PROPERTY_DIM]' , '
+')  AS [p]
+WHERE EXISTS ( SELECT 1 FROM [##Tables] AS [t] WHERE [t].[FQN] = [p].[Field] ) ;
+GO

@@ -29,11 +29,11 @@ GO
 
 DECLARE @Val NVARCHAR(MAX) = N'[SchemaName], [ObjectName], [FQN], [type], [type_desc], [create_date], [modify_date], [definition]' ;
 
-SELECT CONCAT('DROP TABLE IF EXISTS [#Definition]
+SELECT CONCAT('DROP TABLE IF EXISTS [dbo].[Definition]
 GO
 SELECT
 ', @Val, '
-INTO [#Definition]
+INTO [dbo].[Definition]
 FROM(VALUES') AS [SQL]
 UNION ALL
 SELECT
@@ -54,5 +54,5 @@ SELECT CONCAT(')[d] (', @Val, ')
 GO
 SELECT
 	',@Val,'
-FROM [#Definition]') AS [SQL] ;
+FROM [dbo].[Definition]') AS [SQL] ;
 GO

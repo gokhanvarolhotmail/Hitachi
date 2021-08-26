@@ -1,3 +1,23 @@
+SELECT
+    [s].[name] AS [SchemaName]
+  , [o].[name] AS [ObjectName]
+  , [o].[type]
+  , [o].[type_desc]
+  , [o].[create_date]
+  , [o].[modify_date]
+  , CONCAT(
+        'IF OBJECT_ID(''' , QUOTENAME([s].[name]), '.', QUOTENAME([o].[name]), ''') IS NOT NULL DROP '
+      , CASE WHEN [o].[type] = 'V' THEN 'VIEW' WHEN [o].[type] = 'P' THEN 'PROCEDURE' WHEN [o].[type] = 'TR' THEN 'TRIGGER' WHEN [o].[type] LIKE '%f%' THEN
+                                                                                                                            'FUNCTION' END, '
+GO
+') AS [DropSQL]
+FROM [sys].[objects] AS [o]
+INNER JOIN [sys].[schemas] AS [s] ON [o].[schema_id] = [s].[schema_id]
+WHERE( [o].[type] IN ('V', 'TR', 'P') OR [o].[type] LIKE '%F%' )
+ORDER BY [o].[type]
+       , [s].[name]
+       , [o].[name] ;
+GO
 DECLARE
     @CntStart  INT = 0
   , @CntEnd    INT = 1

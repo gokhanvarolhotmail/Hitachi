@@ -1,4 +1,4 @@
-USE [Revantage] ;
+USE [DataBricks] ;
 GO
 DECLARE @SQL VARCHAR(MAX) ;
 

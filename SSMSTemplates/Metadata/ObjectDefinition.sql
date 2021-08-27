@@ -17,7 +17,8 @@ SELECT
                                                                                                                                  'TRIGGER' END, ' '
       , QUOTENAME([s].[name]) + '.' + QUOTENAME([o].[name]), '
 GO
-', [m].[definition_Replaced_2], '
+IF CASE WHEN SERVERPROPERTY(''EngineEdition'') IN (5 /*SQL Database*/, 6 /*Microsoft Azure Synapse Analytics*/) THEN 1 ELSE 0 END = 0
+EXEC(''', REPLACE([m].[definition_Replaced_2], '''', ''''''), ''')
 GO
 ') AS [SQL]
 FROM [sys].[objects] AS [o]

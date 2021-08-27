@@ -36,7 +36,7 @@ WHILE @CntEnd > @CntStart
             @SQL =
             STRING_AGG(
                 CONCAT(
-                    CAST(NULL AS NVARCHAR(MAX)), 'IF OBJECT_ID(''', [d].[FQN], ''') IS NULL
+                    CAST(NULL AS NVARCHAR(MAX)), 'IF CASE WHEN SERVERPROPERTY(''EngineEdition'') IN (5 /*SQL Database*/, 6 /*Microsoft Azure Synapse Analytics*/) THEN 1 ELSE 0 END = 0 AND OBJECT_ID(''', [d].[FQN], ''') IS NULL
 BEGIN TRY
 EXEC(''', REPLACE([d].[definition], '''', ''''''), ''')
 END TRY

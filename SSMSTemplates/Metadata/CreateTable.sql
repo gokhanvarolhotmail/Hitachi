@@ -6,7 +6,8 @@ GO
 SELECT
     [k].[FQN]
   , CONCAT(
-        CAST(NULL AS VARCHAR(MAX)), 'DROP TABLE IF EXISTS ', [k].[FQN],'
+        CAST(NULL AS VARCHAR(MAX)), 'IF CASE WHEN SERVERPROPERTY(''EngineEdition'') IN (5 /*SQL Database*/, 6 /*Microsoft Azure Synapse Analytics*/) THEN 1 ELSE 0 END = 0
+	DROP TABLE IF EXISTS ', [k].[FQN],'
 GO
 CREATE TABLE ', [k].[FQN], '(
 ', STRING_AGG(

@@ -1,7 +1,8 @@
 
 SELECT CONCAT('USE [RCS_SqlDw_NoView]
 GO
-DROP VIEW IF EXISTS ', QUOTENAME([s].[name]), '.', QUOTENAME([o].[name]), '
+IF CASE WHEN SERVERPROPERTY(''EngineEdition'') IN (5 /*SQL Database*/, 6 /*Microsoft Azure Synapse Analytics*/) THEN 1 ELSE 0 END = 0
+	DROP VIEW IF EXISTS ', QUOTENAME([s].[name]), '.', QUOTENAME([o].[name]), '
 GO
 SELECT
 *

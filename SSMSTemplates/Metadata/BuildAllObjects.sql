@@ -6,7 +6,8 @@ SELECT
   , [o].[create_date]
   , [o].[modify_date]
   , CONCAT(
-        'IF OBJECT_ID(''' , QUOTENAME([s].[name]), '.', QUOTENAME([o].[name]), ''') IS NOT NULL DROP '
+        'IF CASE WHEN SERVERPROPERTY(''EngineEdition'') IN (5 /*SQL Database*/, 6 /*Microsoft Azure Synapse Analytics*/) THEN 1 ELSE 0 END = 0 AND OBJECT_ID('''
+      , QUOTENAME([s].[name]), '.', QUOTENAME([o].[name]), ''') IS NOT NULL DROP '
       , CASE WHEN [o].[type] = 'V' THEN 'VIEW' WHEN [o].[type] = 'P' THEN 'PROCEDURE' WHEN [o].[type] = 'TR' THEN 'TRIGGER' WHEN [o].[type] LIKE '%f%' THEN
                                                                                                                             'FUNCTION' END, '
 GO
@@ -35,7 +36,7 @@ WHILE @CntEnd > @CntStart
             @SQL =
             STRING_AGG(
                 CONCAT(
-                    CAST(NULL AS NVARCHAR(MAX)), 'IF OBJECT_ID(''', [d].[FQN], ''') IS NULL
+                    CAST(NULL AS NVARCHAR(MAX)), 'IF CASE WHEN SERVERPROPERTY(''EngineEdition'') IN (5 /*SQL Database*/, 6 /*Microsoft Azure Synapse Analytics*/) THEN 1 ELSE 0 END = 0 AND OBJECT_ID(''', [d].[FQN], ''') IS NULL
 BEGIN TRY
 EXEC(''', REPLACE([d].[definition], '''', ''''''), ''')
 END TRY

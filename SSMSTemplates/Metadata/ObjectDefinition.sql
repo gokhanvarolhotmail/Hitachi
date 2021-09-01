@@ -12,12 +12,13 @@ SELECT
   , LEN([m].[definition]) AS [DefLen]
   , [m].[definition_Replaced_2] AS [definition]
   , CONCAT(
-        'IF OBJECT_ID(''' , QUOTENAME([s].[name]) + '.' + QUOTENAME([o].[name]), ''') IS NOT NULL DROP '
+        'IF CASE WHEN SERVERPROPERTY(''EngineEdition'') IN (5 /*SQL Database*/, 6 /*Microsoft Azure Synapse Analytics*/) THEN 1 ELSE 0 END = 0 AND OBJECT_ID(''' , QUOTENAME([s].[name]) + '.' + QUOTENAME([o].[name]), ''') IS NOT NULL DROP '
       , CASE WHEN [o].[type] LIKE '%F%' THEN 'FUNCTION' WHEN [o].[type] = 'V' THEN 'VIEW' WHEN [o].[type] = 'P' THEN 'PROCEDURE' WHEN [o].[type] LIKE '%t%' THEN
                                                                                                                                  'TRIGGER' END, ' '
       , QUOTENAME([s].[name]) + '.' + QUOTENAME([o].[name]), '
 GO
-', [m].[definition_Replaced_2], '
+IF CASE WHEN SERVERPROPERTY(''EngineEdition'') IN (5 /*SQL Database*/, 6 /*Microsoft Azure Synapse Analytics*/) THEN 1 ELSE 0 END = 0
+EXEC(''', REPLACE([m].[definition_Replaced_2], '''', ''''''), ''')
 GO
 ') AS [SQL]
 FROM [sys].[objects] AS [o]
@@ -35,7 +36,8 @@ GO
 
 DECLARE @Val NVARCHAR(MAX) = N'[SchemaName], [ObjectName], [FQN], [type], [type_desc], [create_date], [modify_date], [definition]' ;
 
-SELECT CONCAT('DROP TABLE IF EXISTS [dbo].[Definition]
+SELECT CONCAT('IF CASE WHEN SERVERPROPERTY(''EngineEdition'') IN (5 /*SQL Database*/, 6 /*Microsoft Azure Synapse Analytics*/) THEN 1 ELSE 0 END = 0
+	DROP TABLE IF EXISTS [dbo].[Definition]
 GO
 SELECT
 ', @Val, '

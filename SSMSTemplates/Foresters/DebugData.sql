@@ -15,7 +15,7 @@ SELECT
   , [k].[EventRewardSequence]
   , [k].[FLAG_Exported]
   FROM [dbo].[Fact_RewardPoints] k
-      WHERE [dacadoo_ID] = '6052f80e4cab0612e60442fa' 
+      WHERE [dacadoo_ID] = '6052f80e4cab0612e60442fa'
 	  UNION all
   SELECT
   'xxx',

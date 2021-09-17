@@ -49,7 +49,7 @@ BEGIN TRY
 									 and [source].[EventID] is not null
 									 and [source].[ContactID] is not null
 								 ) THEN --Null record values do not merge and serve no function in rewarding so they are excluded
-					UPDATE SET 
+					UPDATE SET
 							[EventID]				= source.[EventID]
 							  ,[dacadoo_ID]			= source.[dacadoo_ID]
 							  ,[ContactID]			= [source].[ContactID]
@@ -59,14 +59,14 @@ BEGIN TRY
 							  ,[DescriptionText]	= source.[DescriptionText]
 							  ,UpdatedDateTime		= @CurrentDate
 							  ,UpdatedDateID		= CONVERT(    VARCHAR(8),    CAST(@CurrentDate AS date),   112)
-                                              
+
 				WHEN NOT MATCHED AND (
 									[source].[dacadoo_ID] is not null
 									and  [source].[EventID] is not null
 									and [source].[ContactID] is not null
 									 ) THEN --Null record values do not merge and serve no function in rewarding so they are excluded
 					INSERT
-					(	
+					(
 						[ContactID]
 						,[dacadoo_ID]
 						,[EventID]

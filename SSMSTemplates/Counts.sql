@@ -1,4 +1,3 @@
-
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 GO
 SELECT 'ContactExtensionBase' as [TableName], (SELECT COUNT(1) FROM [dbo].[ContactExtensionBase]),'[dbo].[ContactExtensionBase]' as [Query]
